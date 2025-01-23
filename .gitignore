@@ -1,0 +1,53 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+.venv/*
+
+# pip installs and installed dependencies
+*.egg-info/
+*.eggs/
+dist/
+build/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Cache files
+*.cache
+*.pyo
+*.pyc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Pytest cache
+.cache/
+*.pytest_cache
+
+# Logs and databases
+*.log
+*.sqlite3
+
+# Environment configuration files
+.env
+*.env
+.env.*
+.envrc
+*.ini
+*.cfg
+
+# IDE-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# System files
+.DS_Store
+Thumbs.db
