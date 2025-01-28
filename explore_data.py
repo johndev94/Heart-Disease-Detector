@@ -64,4 +64,11 @@ print(classification_report(y_test, y_pred))
 # Save the model
 joblib.dump(model, 'heart_disease_model.pkl')
 print("Model saved as heart_disease_model.pkl")
+
+
+# %%
+loaded_model = joblib.load('heart_disease_model.pkl')
+sample_input = x_test.iloc[0].values.reshape(1, -1)  # Example input
+sample_prediction = loaded_model.predict(sample_input)
+print(f"Prediction for sample input: {sample_prediction}")
 # %%
