@@ -61,3 +61,7 @@ print("Classification Report:")
 print(classification_report(y_test, y_pred))
 
 # %%
+# Save the model
+joblib.dump(model, 'heart_disease_model.pkl')
+print("Model saved as heart_disease_model.pkl")
+# %%
