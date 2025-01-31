@@ -7,13 +7,13 @@ import joblib
 import pandas as pd
 # External packages
 import streamlit as st
-# import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
+import explore_data
+from sklearn.metrics import accuracy_score, classification_report
+from sklearn.preprocessing import StandardScaler
 
-# Local Modules
-# import settings
-# import helper
+
 
 # Setting page layout
 st.set_page_config(
@@ -63,51 +63,73 @@ thal = st.sidebar.selectbox("Thal", ["Normal", "Fixed Defect", "Reversible Defec
 thal_dict = {"Normal": 1, "Fixed Defect": 2, "Reversible Defect": 3}
 
 if st.sidebar.button("Predict"):
-    # Load the model
+    # Load the trained model
     model = joblib.load('heart_disease_model.pkl')
-    st.markdown("Model loaded successfully")
+    
+    st.success("Model loaded successfully")
 
-    st.write("Model Parameters:")
-    st.write(model.get_params())
-
-    st.write("User Parameters:")
-    user_data = {
-        "age": age,
-        "gender": gender,
-        "cp": cp,
-        "trestbps": trestbps,
-        "chol": chol,
-        "fbs": fbs_numeric,
-        "restecg": restecg,
-        "thalach": thalach,
-        "exang": exang_numerica,
-        "oldpeak": oldpeak,
-        "slope": slope,
-        "ca": ca,
-        "thal": thal
-    }
-
-    st.write("User Numeric Parameters:")
     user_predict_data = {
-        "age": age,
-        "gender": gender_numeric,
-        "cp": cp_dict[cp],
-        "trestbps": trestbps,
-        "chol": chol,
-        "fbs": fbs_numeric,
-        "restecg": restecg_dict[restecg],
-        "thalach": thalach,
-        "exang": exang_numerica,
-        "oldpeak": oldpeak,
-        "slope": slope_dict[slope],
-        "ca": ca,
-        "thal": thal_dict[thal]
-    }
+    "age": age,
+    "sex": gender_numeric,
+    "cp": cp_dict[cp],
+    "trestbps": trestbps,
+    "chol": chol,
+    "fbs": fbs_numeric,
+    "restecg": restecg_dict[restecg],
+    "thalach": thalach,
+    "exang": exang_numerica,
+    "oldpeak": oldpeak,
+    "slope": slope_dict[slope],
+    "ca": ca,
+    "thal": thal_dict[thal]
+}
 
-    st.write(user_data)
-    st.write(user_predict_data)
+    input_df_scaled = model.transform()
+
+    print(user_predict_data)
+    # Convert user input to DataFrame
+    input_df = pd.DataFrame([user_predict_data])
+
+    # Make prediction
+    prediction = model.predict(input_df)
+
+    
     
 
+    # Display results
+    st.subheader("Prediction Result")
+    if prediction[0] == 1:
+        st.error("The model predicts a risk of heart disease.")
+    else:
+        st.success("The model predicts no significant risk of heart disease.")
+
+
+
+user_predict_data = {
+    "age": age,
+    "sex": gender_numeric,  # Rename from "gender" to "sex"
+    "cp": cp_dict[cp],
+    "trestbps": trestbps,
+    "chol": chol,
+    "fbs": fbs_numeric,
+    "restecg": restecg_dict[restecg],
+    "thalach": thalach,
+    "exang": exang_numerica,
+    "oldpeak": oldpeak,
+    "slope": slope_dict[slope],
+    "ca": ca,
+    "thal": thal_dict[thal]
+}
+
+model = joblib.load('heart_disease_model.pkl')
+# Get model training feature names
+if hasattr(model, "feature_names_in_"):
+    print("Model expects features:", model.feature_names_in_)
+else:
+    print("Cannot retrieve feature names from the model.")
+
+# Print user input features
+print("User input features:", list(user_predict_data.keys()))
 
 # st.markdown("""
 # ### Dataset Information:
